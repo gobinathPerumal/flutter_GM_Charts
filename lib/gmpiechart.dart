@@ -3,72 +3,46 @@ import 'package:flutter/material.dart';
 import 'package:impiger_flutter_chart/widgets/indicator.dart';
 
 class GMPieChart extends StatefulWidget {
-  List<Color> chartColorList;
-  List<dynamic> chartValuesList;
-  List<String> chartNameList;
-  List<String>? chartImageList;
-  Color? chartTextColor = Colors.black;
-  Color? indicatorTextColor = Colors.black;
-  double? widgetSize = 30.0;
-  bool? isHorizontalIndicatorView = false;
+  final List<Color> chartColorList;
+  final List<dynamic> chartValuesList;
+  final List<String> chartNameList;
+  final List<String>? chartImageList;
+  final Color chartTextColor;
+  final Color indicatorTextColor;
+  final double widgetSize;
+  final bool isHorizontalIndicatorView;
 
-  GMPieChart(this.chartColorList, this.chartValuesList, this.chartNameList,
-      {this.chartTextColor,
-      this.indicatorTextColor,
-      this.widgetSize,
-      this.chartImageList,
-      this.isHorizontalIndicatorView,
-      super.key});
-
-  @override
-  State<StatefulWidget> createState() => GMPieChartState(
-      chartColorList,
-      chartValuesList,
-      chartNameList,
-      chartTextColor,
-      indicatorTextColor,
-      widgetSize,
-      chartImageList,
-      this.isHorizontalIndicatorView);
-}
-
-class GMPieChartState extends State {
-  int touchedIndex = -1;
-  List<String>? chartImageList;
-  List<Color> chartColorList;
-  List<dynamic> chartValuesList;
-  List<String> chartNameList;
-  Color? chartTextColor;
-  Color? indicatorTextColor;
-  double? widgetSize;
-  bool? isHorizontalIndicatorView;
-
-  GMPieChartState(
-      this.chartColorList,
-      this.chartValuesList,
-      this.chartNameList,
+  const GMPieChart(this.chartColorList, this.chartValuesList, this.chartNameList,
       this.chartTextColor,
       this.indicatorTextColor,
       this.widgetSize,
       this.chartImageList,
-      this.isHorizontalIndicatorView);
+      this.isHorizontalIndicatorView,
+      {super.key});
+
+  @override
+  State<StatefulWidget> createState() => GMPieChartState();
+}
+
+class GMPieChartState extends State<GMPieChart>  {
+  int touchedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: isHorizontalIndicatorView != null && !isHorizontalIndicatorView!
+      height: !widget.isHorizontalIndicatorView
           ? 260
           : 200,
       width: MediaQuery.of(context).size.width,
-      child: chartValuesList.length == chartNameList.length &&
-              chartValuesList.length == chartColorList.length
-          ? isHorizontalIndicatorView != null && !isHorizontalIndicatorView!
+      child: widget.chartValuesList.length == widget.chartNameList.length &&
+          widget.chartValuesList.length == widget.chartColorList.length
+          ? !widget.isHorizontalIndicatorView
               ? Column(
                   children: <Widget>[
                     const SizedBox(
                       height: 18,
                     ),
-                    Container(
+                    SizedBox(
                       height: 200,
                       child: PieChart(
                         PieChartData(
@@ -96,7 +70,7 @@ class GMPieChartState extends State {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     SingleChildScrollView(
@@ -106,13 +80,13 @@ class GMPieChartState extends State {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           for (int item = 0;
-                              item < chartColorList.length;
+                              item < widget.chartColorList.length;
                               item++)
                             Row(
                               children: [
                                 Indicator(
-                                  color: chartColorList[item],
-                                  text: chartNameList[item],
+                                  color: widget.chartColorList[item],
+                                  text: widget.chartNameList[item],
                                   isSquare: true,
                                 ),
                                 const SizedBox(
@@ -168,13 +142,13 @@ class GMPieChartState extends State {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           for (int item = 0;
-                              item < chartColorList.length;
+                              item < widget.chartColorList.length;
                               item++)
                             Column(
                               children: [
                                 Indicator(
-                                  color: chartColorList[item],
-                                  text: chartNameList[item],
+                                  color: widget.chartColorList[item],
+                                  text: widget.chartNameList[item],
                                   isSquare: true,
                                 ),
                                 const SizedBox(
@@ -200,26 +174,25 @@ class GMPieChartState extends State {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(chartValuesList.length, (item) {
+    return List.generate(widget.chartValuesList.length, (item) {
       final isTouched = item == touchedIndex;
       final fontSize = isTouched ? 25.0 : 16.0;
       final radius = isTouched ? 60.0 : 50.0;
-      widgetSize = isTouched ? 35.0 : 30.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       return PieChartSectionData(
-        color: chartColorList[item],
-        value: chartValuesList[item].toDouble(),
-        title: chartValuesList[item].toString(),
+        color: widget.chartColorList[item],
+        value: widget.chartValuesList[item].toDouble(),
+        title: widget.chartValuesList[item].toString(),
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.normal,
-          color: chartTextColor ?? Colors.black,
+          color: widget.chartTextColor,
           shadows: shadows,
         ),
-        badgeWidget: chartImageList != null && chartImageList!.length == chartNameList.length
+        badgeWidget: widget.chartImageList != null && widget.chartImageList!.length == widget.chartNameList.length
             ? _Badge(
-                chartImageList != null ? chartImageList![item] : "",
+          widget.chartImageList != null ? widget.chartImageList![item] : "",
                 size: 25.0,
                 borderColor: Colors.white,
               )

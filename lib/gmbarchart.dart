@@ -2,34 +2,24 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class GMBarChart extends StatefulWidget {
-  List<dynamic> chartValuesList;
-  List<String> chartNameList;
-  TextStyle? chartXAxisTextStyle = const TextStyle(
-    color: Colors.black,
-    fontWeight: FontWeight.normal,
-    fontSize: 14,
-  );
-  bool? isThinChart = false;
-  Color barColor;
-  double maxYAxisValue;
+  final List<dynamic> chartValuesList;
+  final List<String> chartNameList;
+  final TextStyle chartXAxisTextStyle;
+  final bool? isThinChart;
+  final Color barColor;
+  final double maxYAxisValue;
 
-  GMBarChart(this.chartValuesList, this.chartNameList, this.barColor, this.maxYAxisValue,{this.chartXAxisTextStyle,this.isThinChart,super.key});
+  const GMBarChart(this.chartValuesList, this.chartNameList, this.barColor, this.maxYAxisValue,this.chartXAxisTextStyle,this.isThinChart,{super.key});
 
   @override
-  State<StatefulWidget> createState() => GMBarChartState(this.chartValuesList, this.chartNameList, this.barColor, this.maxYAxisValue,this.chartXAxisTextStyle, this.isThinChart);
+  State<StatefulWidget> createState() => GMBarChartState();
 }
 
 class GMBarChartState extends State<GMBarChart> {
-  List<dynamic> chartValuesList;
-  List<String> chartNameList;
-  TextStyle? chartXAxisTextStyle;
-  Color barColor;
-  double maxYAxisValue;
-  bool? isThinChart;
-  GMBarChartState(this.chartValuesList, this.chartNameList, this.barColor, this.maxYAxisValue,this.chartXAxisTextStyle, this.isThinChart);
+  GMBarChartState();
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 250,
       width: MediaQuery.of(context).size.width,
       child: Padding(
@@ -51,8 +41,8 @@ class GMBarChartState extends State<GMBarChart> {
 
   Widget getXAxisTitles(double value, TitleMeta meta) {
     Widget text = Text(
-      chartNameList[value.toInt()],
-      style: chartXAxisTextStyle,
+      widget.chartNameList[value.toInt()],
+      style: widget.chartXAxisTextStyle,
     );
 
     return SideTitleWidget(
@@ -63,7 +53,7 @@ class GMBarChartState extends State<GMBarChart> {
   }
   BarChartData randomData() {
     return BarChartData(
-      maxY: maxYAxisValue,
+      maxY: widget.maxYAxisValue,
       barTouchData: BarTouchData(
         enabled: true,
       ),
@@ -83,7 +73,7 @@ class GMBarChartState extends State<GMBarChart> {
             showTitles: true,
           ),
         ),
-        topTitles:  AxisTitles(
+        topTitles:  const AxisTitles(
           sideTitles: SideTitles(
             showTitles: false,
           ),
@@ -95,16 +85,16 @@ class GMBarChartState extends State<GMBarChart> {
         ),
       ),
       borderData: FlBorderData(
-        show: true,border:Border.all(color: barColor.withOpacity(0.3))
+        show: true,border:Border.all(color: widget.barColor.withOpacity(0.3))
       ),
       barGroups: List.generate(
-        chartValuesList.length,
-        (item) => isThinChart??false?makeThinGroupData(
+        widget.chartValuesList.length,
+        (item) => widget.isThinChart??false?makeThinGroupData(
           item,
-          chartValuesList[item].toDouble(),
+          widget.chartValuesList[item].toDouble(),
         ):makeGroupData(
           item,
-          chartValuesList[item].toDouble(),
+          widget.chartValuesList[item].toDouble(),
         ),
       ),
       gridData: const FlGridData(show: false),
@@ -146,8 +136,8 @@ class GMBarChartState extends State<GMBarChart> {
 
   LinearGradient get _barsGradient => LinearGradient(
     colors: [
-      barColor,
-      barColor,
+      widget.barColor,
+      widget.barColor,
     ],
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,

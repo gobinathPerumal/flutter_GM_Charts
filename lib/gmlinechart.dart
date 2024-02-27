@@ -2,20 +2,17 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class GMLineChart extends StatefulWidget {
-  List<dynamic> chartValuesList;
-  List<String> chartNameList;
-  Color lineColor;
-  GMLineChart(this.chartValuesList, this.chartNameList,this.lineColor,{super.key});
+  final List<dynamic> chartValuesList;
+  final List<String> chartNameList;
+  final Color lineColor;
+  const GMLineChart(this.chartValuesList, this.chartNameList,this.lineColor,{super.key});
 
   @override
-  State<GMLineChart> createState() => _GMLineChartState(this.chartValuesList, this.chartNameList,this.lineColor);
+  State<GMLineChart> createState() => GMLineChartState();
 }
 
-class _GMLineChartState extends State<GMLineChart> {
-  List<dynamic> chartValuesList;
-  List<String> chartNameList;
-  Color lineColor;
-  _GMLineChartState(this.chartValuesList, this.chartNameList,this.lineColor);
+class GMLineChartState extends State<GMLineChart> {
+  GMLineChartState();
 
   List<Color> gradientColors = [
     Colors.cyan,
@@ -26,7 +23,7 @@ class _GMLineChartState extends State<GMLineChart> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Container(
+        SizedBox(
           height: 200,
           width: MediaQuery.of(context).size.width,
           child: Padding(
@@ -50,8 +47,7 @@ class _GMLineChartState extends State<GMLineChart> {
       fontWeight: FontWeight.bold,
       fontSize: 16,
     );
-    print("bot"+value.toString());
-    Widget text = Text(chartNameList[value.toInt()], style: style);
+    Widget text = Text(widget.chartNameList[value.toInt()], style: style);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -64,7 +60,7 @@ class _GMLineChartState extends State<GMLineChart> {
       fontWeight: FontWeight.bold,
       fontSize: 15,
     );
-    String text = chartNameList[value.toInt()];
+    String text = widget.chartNameList[value.toInt()];
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
@@ -77,13 +73,13 @@ class _GMLineChartState extends State<GMLineChart> {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: lineColor,
+            color: widget.lineColor,
             strokeWidth: 0.3,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: lineColor,
+            color: widget.lineColor,
             strokeWidth: 0.1,
           );
         },
@@ -104,7 +100,7 @@ class _GMLineChartState extends State<GMLineChart> {
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
-        leftTitles: AxisTitles(
+        leftTitles: const AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
             interval: 1,

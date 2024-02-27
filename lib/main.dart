@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:impiger_flutter_chart/barchart.dart';
-import 'package:impiger_flutter_chart/piechart.dart';
+import 'package:impiger_flutter_chart/gmbarchart.dart';
+import 'package:impiger_flutter_chart/gmpiechart.dart';
 
-import 'linechart.dart';
+import 'gmlinechart.dart';
+import 'gmtwobarchart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,22 +28,31 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  List<Color> chartColorList = [Colors.greenAccent, Colors.amber, Colors.blueGrey, Colors.lightBlueAccent, Colors.pink];
-  List<String> chartNameList = ["Green", "Purple","Grey","Blue","Pink"];
-  List<String> chartImageList = ["https://www.gstatic.com/webp/gallery/1.jpg","https://www.gstatic.com/webp/gallery/2.webp","https://www.gstatic.com/webp/gallery/1.jpg","https://www.gstatic.com/webp/gallery/4.jpg","https://www.gstatic.com/webp/gallery/5.jpg"];
-  List<dynamic> chartValuesList = [5,1.5,2,1,1.5];
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  List<Color> chartColorList = [
+    Colors.greenAccent,
+    Colors.amber,
+    Colors.blueGrey,
+    Colors.lightBlueAccent,
+    Colors.pink
+  ];
+  List<String> chartNameList = ["Green", "Purple", "Grey", "Blue", "Pink"];
+  List<String> chartImageList = [
+    "https://www.gstatic.com/webp/gallery/1.jpg",
+    "https://www.gstatic.com/webp/gallery/2.webp",
+    "https://www.gstatic.com/webp/gallery/1.jpg",
+    "https://www.gstatic.com/webp/gallery/4.jpg",
+    "https://www.gstatic.com/webp/gallery/5.jpg"
+  ];
+  List<dynamic> chartValuesList = [5, 1.5, 2, 1, 1.5];
+  List<dynamic> chartBarValuesList = [2, 3, 6, 5, 10];
 
   @override
   Widget build(BuildContext context) {
@@ -53,34 +63,69 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 40,),
-              const Text("PieChart Examples",style: TextStyle(fontSize: 16, color: Colors.black)),
-              SizedBox(height: 40,),
-              GMPieChart(chartColorList,chartValuesList,chartNameList),
-              SizedBox(height: 40,),
-              GMPieChart(chartColorList,chartValuesList,chartNameList,chartImageList: chartImageList,isHorizontalIndicatorView: false),
-              SizedBox(height: 40,),
-              const Text("PieChart Examples",style: TextStyle(fontSize: 16, color: Colors.black)),
-              SizedBox(height: 40,),
-              GMBarChart(chartValuesList,chartNameList, Colors.orangeAccent, 10, chartXAxisTextStyle: TextStyle(
-                color: Colors.blueGrey,
-                fontWeight: FontWeight.normal,
-                fontSize: 15,
-              ),),
-              SizedBox(height: 40,),
-              GMBarChart(chartValuesList,chartNameList, Colors.blueGrey, 10, chartXAxisTextStyle: TextStyle(
-                color: Colors.orangeAccent,
-                fontWeight: FontWeight.normal,
-                fontSize: 15,
-              ),isThinChart: true,),
-            SizedBox(height: 40,),
-              GMLineChart(chartValuesList,chartNameList, Colors.blueGrey),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text("PieChart Examples",
+                  style: TextStyle(fontSize: 16, color: Colors.black)),
+              const SizedBox(
+                height: 40,
+              ),
+              GMPieChart(chartColorList, chartValuesList, chartNameList,
+                  Colors.black, Colors.black, 30.0, const [], true),
+              const SizedBox(
+                height: 40,
+              ),
+              GMPieChart(chartColorList, chartValuesList, chartNameList,
+                  Colors.black, Colors.black, 30.0, chartImageList, false),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text("BarChart Examples",
+                  style: TextStyle(fontSize: 16, color: Colors.black)),
+              const SizedBox(
+                height: 40,
+              ),
+              GMBarChart(
+                  chartValuesList,
+                  chartNameList,
+                  Colors.orangeAccent,
+                  10,
+                  const TextStyle(
+                    color: Colors.blueGrey,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 15,
+                  ),
+                  false),
+              const SizedBox(
+                height: 40,
+              ),
+              GMBarChart(
+                chartValuesList,
+                chartNameList,
+                Colors.blueGrey,
+                10,
+                const TextStyle(
+                  color: Colors.orangeAccent,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 15,
+                ),
+                true,
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              GMTwoBarChart(chartNameList, Colors.black, Colors.amberAccent, Colors.redAccent,chartValuesList,chartBarValuesList,20),
+              const SizedBox(
+                height: 40,
+              ),
+              GMLineChart(chartValuesList, chartNameList, Colors.blueGrey),
             ],
           ),
         ),
